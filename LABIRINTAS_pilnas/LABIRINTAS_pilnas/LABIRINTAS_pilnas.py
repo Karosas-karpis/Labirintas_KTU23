@@ -216,7 +216,7 @@ def level_2():
     mygt1.configure(text='Kitas lygis')
     mygt2.configure(text='Baigti', command=baigti)
     mygt3.configure(fg_color='#1b145e')
-    mygt3.place(relx=0.39, rely=0.87, relwidth=0.2)
+    mygt3.place(relx=0.39, rely=0.8779, relwidth=0.2)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
 def move(event):
