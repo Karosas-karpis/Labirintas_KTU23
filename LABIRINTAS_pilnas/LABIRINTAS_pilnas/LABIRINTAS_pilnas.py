@@ -12,6 +12,7 @@ remas.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.96)
 zaid_pav=customtkinter.CTkLabel(remas, text='LABIRINTAS', font=('Silkscreen',52))
 zaid_pav.pack(pady=25, padx=10)
 zaid_kr=customtkinter.CTkLabel(remas, text='')
+langas.resizable(False,False)
 
 def baigti():
     langas.destroy()
@@ -20,15 +21,16 @@ def level_1():
     global l, labirintas, player, langas, zaid, mygt1, mygt2
     pygame.init()
     zaid_pav.destroy()
-    langas.geometry('550x585')
+    langas.geometry('550x590')
     zaid=customtkinter.CTkFrame(remas)
     zaid.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.87)
     mygt1.configure(text='Kitas lygis', command=level_2)
     mygt2.configure(text='Baigti', command=baigti)
     mygt1.configure(fg_color='#1b145e')
     mygt2.configure(fg_color='#1b145e')
-    mygt1.place(relx=0.68, rely=0.9, relwidth=0.18)
-    mygt2.place(relx=0.86, rely=0.9, relwidth=0.18)
+    mygt1.place(relx=0.67, rely=0.89, relwidth=0.19)
+    mygt2.place(relx=0.86, rely=0.89, relwidth=0.18)
+    mygt3.destroy()
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
     player=l.create_oval(10,290,30,310,fill="green")
@@ -213,12 +215,15 @@ def level_1():
     l.create_line(625,0,625,280,fill="black",width=5)
     l.create_line(625,315,625,595,fill="black",width=5)
 def level_2():
+    global mygt3
+    langas.geometry('550x590')
     mygt1.configure(text='Kitas lygis')
     mygt2.configure(text='Baigti', command=baigti)
-    mygt3.configure(fg_color='#1b145e')
-    mygt3.place(relx=0.39, rely=0.8779, relwidth=0.2)
+    mygt3=customtkinter.CTkButton(remas, text='Ankstesnis lygis', command=level_1, fg_color='#1b145e')
+    mygt3.place(relx=0.37, rely=0.883, relwidth=0.2)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
+
 def move(event):
     x,y=0, 0
     if event.keysym=="Up":
@@ -246,12 +251,14 @@ def move(event):
 
 langas.bind_all("<Key>",move)
 
-mygt1=customtkinter.CTkButton(langas, text='Pradėti žaidimą', command=level_1)
+mygt1=customtkinter.CTkButton(langas, text='Pradėti žaidimą', command=level_1, fg_color='#1b145e')
 mygt1.place(relx=0.5, rely=0.55, anchor=customtkinter.CENTER)
 
-mygt2=customtkinter.CTkButton(langas, text='Išeiti', command=baigti)
+mygt2=customtkinter.CTkButton(langas, text='Išeiti', command=baigti, fg_color='#1b145e')
 mygt2.place(relx=0.5, rely=0.65, anchor=customtkinter.CENTER)
 
-mygt3=customtkinter.CTkButton(langas, text='Ankstesnis lygis', command=level_1)
+mygt3=customtkinter.CTkButton(langas, text='Nugalėtojai', fg_color='#1b145e')
+mygt3.place(relx=0.5, rely=0.9, anchor=customtkinter.CENTER)
+
 
 langas.mainloop()
