@@ -1,11 +1,11 @@
 import customtkinter
 import pygame
-from random import choice
+import random
 
 customtkinter.set_appearance_mode('Dark')
 customtkinter.set_default_color_theme('dark-blue')
 langas=customtkinter.CTk()
-langas.geometry('500x350')
+langas.geometry('500x400')
 langas.title('Labirintas')
 remas=customtkinter.CTkFrame(langas)
 remas.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.96)
@@ -244,6 +244,21 @@ def level_3():
     mygt7.configure(command=level_2)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
+    player=l.create_oval(10,290,30,310,fill="green")
+    eil=17
+    stulp=18
+    lang_pl=34.5
+    lang_auk=34.5
+    pastumta_x=4
+    pastumta_y=4
+    labirintas=[]
+    for i in range(0, stulp+1):
+        x_k=i*lang_pl+pastumta_x
+        l.create_line(x_k,pastumta_y,x_k,eil*lang_auk+pastumta_y, fill='black', width=5)
+        for j in range(0,eil+1):
+            y_k=j*lang_auk+pastumta_y
+            l.create_line(pastumta_x, y_k, stulp*lang_pl+pastumta_x, y_k, fill='black', width=5)
+            labirintas.append((x_k,y_k))
 
 
 def move(event):
