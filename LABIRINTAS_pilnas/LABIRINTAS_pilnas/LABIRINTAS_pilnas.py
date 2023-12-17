@@ -2,7 +2,7 @@ import customtkinter
 import pygame
 from random import choice
 
-customtkinter.set_appearance_mode('light')
+customtkinter.set_appearance_mode('Dark')
 customtkinter.set_default_color_theme('dark-blue')
 langas=customtkinter.CTk()
 langas.geometry('500x350')
@@ -14,26 +14,43 @@ zaid_pav.pack(pady=25, padx=10)
 zaid_kr=customtkinter.CTkLabel(remas, text='')
 langas.resizable(False,False)
 
+def lango_nust(choice):
+    if choice=='Light':
+        customtkinter.set_appearance_mode('Light')
+    else:
+        customtkinter.set_appearance_mode('Dark')
+       
+
+sarasas=['Dark','Light']
+combobox_pas=customtkinter.StringVar(value='Dark')
+pasirinkimas=customtkinter.CTkComboBox(langas, values=sarasas, command=lango_nust, variable=combobox_pas, height=20, width=75)
+combobox_pas.set('Dark')    
+pasirinkimas.place(relx=0.83, rely=0.02)
+
+
 def baigti():
     langas.destroy()
     
 def level_1():
-    global l, labirintas, player, langas, zaid, mygt1, mygt2
+    global l, labirintas, player, langas, zaid, mygt5, mygt6, mygt7
     pygame.init()
-    zaid_pav.destroy()
+
     langas.geometry('550x590')
     zaid=customtkinter.CTkFrame(remas)
     zaid.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.87)
-    mygt1.configure(text='Kitas lygis', command=level_2)
-    mygt2.configure(text='Baigti', command=baigti)
-    mygt1.configure(fg_color='#1b145e')
-    mygt2.configure(fg_color='#1b145e')
-    mygt1.place(relx=0.67, rely=0.89, relwidth=0.19)
-    mygt2.place(relx=0.86, rely=0.89, relwidth=0.18)
-    mygt3.destroy()
+    mygt5=customtkinter.CTkButton(remas, text='Kitas lygis', command=level_2, fg_color='#1b145e')
+    mygt6=customtkinter.CTkButton(remas, text='Baigti', command=baigti, fg_color='#1b145e')
+    mygt5.place(relx=0.6, rely=0.89, relwidth=0.19)
+    mygt6.place(relx=0.8, rely=0.89, relwidth=0.18)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
     player=l.create_oval(10,290,30,310,fill="green")
+    zaid_pav.place(relx=1, rely=1)
+    mygt1.place(relx=1, rely=0.5)
+    mygt2.place(relx=1, rely=0.6)
+    mygt3.place(relx=1, rely=0.7)
+    mygt7.destroy()
+    pasirinkimas.place(relx=1, rely=0)
     labirintas=[
     (4,4,630,4),
     (35,35,70,35),(105,35,175,35),(249,35,280,35),(385,35,420,35),(490,35,525,35),
@@ -215,14 +232,19 @@ def level_1():
     l.create_line(625,0,625,280,fill="black",width=5)
     l.create_line(625,315,625,595,fill="black",width=5)
 def level_2():
-    global mygt3
-    langas.geometry('550x590')
-    mygt1.configure(text='Kitas lygis')
-    mygt2.configure(text='Baigti', command=baigti)
-    mygt3=customtkinter.CTkButton(remas, text='Ankstesnis lygis', command=level_1, fg_color='#1b145e')
-    mygt3.place(relx=0.37, rely=0.883, relwidth=0.2)
+    global mygt7
+    mygt5.configure(text='Kitas lygis', command=level_3)
+    mygt7=customtkinter.CTkButton(remas, text='Ankstesnis lygis', command=level_1, fg_color='#1b145e')
+    mygt7.place(relx=0.39, rely=0.89, relwidth=0.2)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
+
+def level_3():
+    mygt5.configure(text='Žaist iš naujo', command=level_1)
+    mygt7.configure(command=level_2)
+    l=customtkinter.CTkCanvas(remas,bg="white")
+    l.place(x=15,y=15,width=630,height=595)
+
 
 def move(event):
     x,y=0, 0
@@ -252,13 +274,17 @@ def move(event):
 langas.bind_all("<Key>",move)
 
 mygt1=customtkinter.CTkButton(langas, text='Pradėti žaidimą', command=level_1, fg_color='#1b145e')
-mygt1.place(relx=0.5, rely=0.55, anchor=customtkinter.CENTER)
+mygt1.place(relx=0.36, rely=0.55)
 
 mygt2=customtkinter.CTkButton(langas, text='Išeiti', command=baigti, fg_color='#1b145e')
-mygt2.place(relx=0.5, rely=0.65, anchor=customtkinter.CENTER)
+mygt2.place(relx=0.36, rely=0.65)
 
 mygt3=customtkinter.CTkButton(langas, text='Nugalėtojai', fg_color='#1b145e')
-mygt3.place(relx=0.5, rely=0.9, anchor=customtkinter.CENTER)
+mygt3.place(relx=0.36, rely=0.85)
+
+mygt7=customtkinter.CTkButton(langas, text='Ankstesnis lygis', command=level_1)
+
+
 
 
 langas.mainloop()
