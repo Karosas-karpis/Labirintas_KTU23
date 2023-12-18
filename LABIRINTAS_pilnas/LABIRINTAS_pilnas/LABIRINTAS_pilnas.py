@@ -2,6 +2,7 @@ import customtkinter
 import pygame
 import random
 
+#Kuriama grafinė sąsaja, pagrindinis langas, mygtukai
 customtkinter.set_appearance_mode('Dark')
 customtkinter.set_default_color_theme('dark-blue')
 langas=customtkinter.CTk()
@@ -14,27 +15,28 @@ zaid_pav.pack(pady=25, padx=10)
 zaid_kr=customtkinter.CTkLabel(remas, text='')
 langas.resizable(False,False)
 
+#Sukuriama funkcija, kuri leist nustatyti lango išvaizdą (Dark, Light)
 def lango_nust(choice):
     if choice=='Light':
         customtkinter.set_appearance_mode('Light')
     else:
         customtkinter.set_appearance_mode('Dark')
-       
-
+#Sukuriamas ComboBox
 sarasas=['Dark','Light']
 combobox_pas=customtkinter.StringVar(value='Dark')
 pasirinkimas=customtkinter.CTkComboBox(langas, values=sarasas, command=lango_nust, variable=combobox_pas, height=20, width=75)
 combobox_pas.set('Dark')    
 pasirinkimas.place(relx=0.83, rely=0.02)
 
-
+#Funkcija išjungianti langą
 def baigti():
     langas.destroy()
     
+#Pirmojo lygio funkcija
 def level_1():
     global l, labirintas, player, langas, zaid, mygt5, mygt6, mygt7
     pygame.init()
-
+    #Aprašomi lango pakeitimai, sukuriami nauji mygtukai, jiems priskiriamos funkcijos
     langas.geometry('550x590')
     zaid=customtkinter.CTkFrame(remas)
     zaid.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.87)
@@ -43,14 +45,16 @@ def level_1():
     mygt5.place(relx=0.6, rely=0.89, relwidth=0.19)
     mygt6.place(relx=0.8, rely=0.89, relwidth=0.18)
     l=customtkinter.CTkCanvas(remas,bg="white")
-    l.place(x=15,y=15,width=630,height=595)
-    player=l.create_oval(10,290,30,310,fill="green")
     zaid_pav.place(relx=1, rely=1)
     mygt1.place(relx=1, rely=0.5)
     mygt2.place(relx=1, rely=0.6)
     mygt3.place(relx=1, rely=0.7)
     mygt7.destroy()
-    pasirinkimas.place(relx=1, rely=0)
+    pasirinkimas.place(relx=1, rely=0)    
+    #Sukuriama žaidėjo ikona
+    l.place(x=15,y=15,width=630,height=595)
+    player=l.create_oval(10,290,30,310,fill="green")
+    
     labirintas=[
     (4,4,630,4),
     (35,35,70,35),(105,35,175,35),(249,35,280,35),(385,35,420,35),(490,35,525,35),
@@ -231,6 +235,8 @@ def level_1():
     l.create_line(595,525,595,560,fill="black",width=5)
     l.create_line(625,0,625,280,fill="black",width=5)
     l.create_line(625,315,625,595,fill="black",width=5)
+    
+#Sukuriama antro lygio funkcija, joje aprašomi lango pakeitimai ir suformatojamas naujas labirintas 
 def level_2():
     global mygt7
     mygt5.configure(text='Kitas lygis', command=level_3)
@@ -239,44 +245,194 @@ def level_2():
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
 
+#Sukuriama trečio lygio funkcija, kurioje aprašomi lango pakeitimai ir kuriamas paskutinis labirintas
 def level_3():
+    global labirintas, l, player
     mygt5.configure(text='Žaist iš naujo', command=level_1)
     mygt7.configure(command=level_2)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
-    player=l.create_oval(10,290,30,310,fill="green")
-    eil=17
+    player=l.create_oval(10,250,30,270,fill="green")
     stulp=18
-    lang_pl=34.5
-    lang_auk=34.5
-    pastumta_x=4
-    pastumta_y=4
+    eil=17
+    lang=34.5
+    x=4
+    y=4
     labirintas=[]
     for i in range(0, stulp+1):
-        x_k=i*lang_pl+pastumta_x
-        l.create_line(x_k,pastumta_y,x_k,eil*lang_auk+pastumta_y, fill='black', width=5)
+        x_k=i*lang+x
         for j in range(0,eil+1):
-            y_k=j*lang_auk+pastumta_y
-            l.create_line(pastumta_x, y_k, stulp*lang_pl+pastumta_x, y_k, fill='black', width=5)
+            y_k=j*lang+y
             labirintas.append((x_k,y_k))
+    # print(labirintas)            
+    #Braižomi labirinto rėmai
+    l.create_line(x,y,x+(18*lang),y, fill='black', width=5)
+    l.create_line(x,y,x,y+(7*lang), fill='black', width=5)    
+    l.create_line(x,y+(8*lang),x,y+(17*lang), fill='black', width=5)
+    l.create_line(x+(18*lang),y, x+(18*lang),y+(6*lang), fill='black', width=5)
+    l.create_line(x+(18*lang),y+(7*lang), x+(18*lang),y+(17*lang), fill='black', width=5)
+    l.create_line(x,y+(17*lang),x+(18*lang),y+(17*lang), fill='black', width=5)
 
+    l.create_line(x+(8*lang),y,x+(8*lang),y+lang, fill='black', width=5)
+    l.create_line(x+(11*lang),y,x+(11*lang),y+(2*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y,x+(14*lang),y+lang, fill='black', width=5)
+    l.create_line(x+lang,y+lang,x+lang,y+(4*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+lang,x+(3*lang), y+lang, fill='black', width=5)
+    l.create_line(x+(4*lang),y+lang,x+(8*lang), y+lang, fill='black', width=5)
+    l.create_line(x+(9*lang),y+lang,x+(10*lang), y+lang, fill='black', width=5)
+    l.create_line(x+(14*lang),y+lang,x+(17*lang), y+lang, fill='black', width=5)
+    l.create_line(x+(3*lang),y+lang,x+(3*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+lang,x+(6*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+lang,x+(9*lang), y+(2*lang), fill='black', width=5)
+    l.create_line(x+(12*lang),y+lang,x+(12*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+lang,x+(13*lang), y+(2*lang), fill='black', width=5)
+    l.create_line(x+(3*lang),y+(2*lang),x+(5*lang), y+(2*lang), fill='black', width=5)
+    l.create_line(x+(7*lang),y+(2*lang),x+(9*lang), y+(2*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(2*lang),x+(12*lang), y+(2*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(2*lang),x+(17*lang), y+(2*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(2*lang),x+(2*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(2*lang),x+(5*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(7*lang),y+(2*lang),x+(7*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(2*lang),x+(10*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(16*lang),y+(2*lang),x+(16*lang), y+(7*lang), fill='black', width=5)
+    l.create_line(x+(17*lang),y+(2*lang),x+(17*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(3*lang),x+(2*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(8*lang),y+(3*lang),x+(10*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(3*lang),x+(15*lang), y+(3*lang), fill='black', width=5)
+    l.create_line(x+(4*lang),y+(3*lang),x+(4*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(3*lang),x+(11*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y+(3*lang),x+(14*lang), y+(7*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(3*lang),x+(15*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x,y+(4*lang),x+(1*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(4*lang),x+(3*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(4*lang),x+(6*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(7*lang),y+(4*lang),x+(8*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(4*lang),x+(13*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(16*lang),y+(4*lang),x+(17*lang), y+(4*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(4*lang),x+(2*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(4*lang),x+(5*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(4*lang),x+(9*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(4*lang),x+(13*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(5*lang),x+(5*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+(5*lang),x+(7*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(8*lang),y+(5*lang),x+(9*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(5*lang),x+(12*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(5*lang),x+(16*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(17*lang),y+(5*lang),x+(18*lang), y+(5*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+(5*lang),x+(6*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(8*lang),y+(5*lang),x+(8*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(5*lang),x+(10*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(17*lang),y+(5*lang),x+(17*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(6*lang),x+(2*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(3*lang),y+(6*lang),x+(6*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(7*lang),y+(6*lang),x+(8*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(6*lang),x+(10*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(6*lang),x+(13*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y+(6*lang),x+(15*lang), y+(6*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(6*lang),x+(1*lang), y+(8*lang), fill='black', width=5)
+    l.create_line(x+(4*lang),y+(6*lang),x+(4*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(6*lang),x+(9*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(6*lang),x+(11*lang), y+(7*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(7*lang),x+(3*lang), y+(7*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(7*lang),x+(12*lang), y+(7*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(7*lang),x+(14*lang), y+(7*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(7*lang),x+(18*lang), y+(7*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(7*lang),x+(2*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(7*lang),y+(7*lang),x+(7*lang), y+(8*lang), fill='black', width=5)
+    l.create_line(x+(12*lang),y+(7*lang),x+(12*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(7*lang),x+(13*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(7*lang),x+(15*lang), y+(8*lang), fill='black', width=5)
+    l.create_line(x,y+(8*lang),x+(1*lang), y+(8*lang), fill='black', width=5)
+    l.create_line(x+(3*lang),y+(8*lang),x+(6*lang), y+(8*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(8*lang),x+(11*lang), y+(8*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y+(8*lang),x+(15*lang), y+(8*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+(8*lang),x+(6*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(8*lang),y+(8*lang),x+(8*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(8*lang),x+(10*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(8*lang),x+(11*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y+(8*lang),x+(14*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(16*lang),y+(8*lang),x+(16*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(17*lang),y+(8*lang),x+(17*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(9*lang),x+(4*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+(9*lang),x+(8*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(9*lang),x+(17*lang), y+(9*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(9*lang),x+(1*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(9*lang),x+(5*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(9*lang),x+(15*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x,y+(10*lang),x+(1*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(10*lang),x+(3*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(10*lang),x+(13*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y+(10*lang),x+(15*lang), y+(10*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(10*lang),x+(2*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(16*lang),y+(10*lang),x+(16*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(11*lang),x+(2*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(3*lang),y+(11*lang),x+(4*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+(11*lang),x+(7*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(11*lang),x+(10*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(11*lang),x+(16*lang), y+(11*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(11*lang),x+(1*lang), y+(15*lang), fill='black', width=5)
+    l.create_line(x+(3*lang),y+(11*lang),x+(3*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+(11*lang),x+(6*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(7*lang),y+(11*lang),x+(7*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(8*lang),y+(11*lang),x+(8*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(11*lang),x+(9*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(11*lang),x+(11*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(12*lang),x+(3*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(4*lang),y+(12*lang),x+(5*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(12*lang),x+(11*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(12*lang),y+(12*lang),x+(15*lang), y+(12*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(12*lang),x+(2*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(4*lang),y+(12*lang),x+(4*lang), y+(17*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(12*lang),x+(10*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(12*lang),y+(12*lang),x+(12*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(12*lang),x+(15*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(3*lang),y+(13*lang),x+(4*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(13*lang),x+(10*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(13*lang),x+(12*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(13*lang),x+(14*lang), y+(13*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(13*lang),x+(5*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(13*lang),x+(13*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(14*lang),x+(3*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(14*lang),x+(7*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(8*lang),y+(14*lang),x+(13*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y+(14*lang),x+(15*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(16*lang),y+(14*lang),x+(18*lang), y+(14*lang), fill='black', width=5)
+    l.create_line(x+(3*lang),y+(14*lang),x+(3*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(14*lang),x+(9*lang), y+(15*lang), fill='black', width=5)
+    l.create_line(x+(12*lang),y+(14*lang),x+(12*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(14*lang),y+(14*lang),x+(14*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(0*lang),y+(15*lang),x+(2*lang), y+(15*lang), fill='black', width=5)
+    l.create_line(x+(6*lang),y+(15*lang),x+(8*lang), y+(15*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(15*lang),x+(11*lang), y+(15*lang), fill='black', width=5)
+    l.create_line(x+(12*lang),y+(15*lang),x+(17*lang), y+(15*lang), fill='black', width=5)
+    l.create_line(x+(8*lang),y+(15*lang),x+(8*lang), y+(17*lang), fill='black', width=5)
+    l.create_line(x+(10*lang),y+(15*lang),x+(10*lang), y+(17*lang), fill='black', width=5)
+    l.create_line(x+(1*lang),y+(16*lang),x+(2*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(5*lang),y+(16*lang),x+(7*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(9*lang),y+(16*lang),x+(10*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(11*lang),y+(16*lang),x+(12*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(16*lang),x+(17*lang), y+(16*lang), fill='black', width=5)
+    l.create_line(x+(2*lang),y+(16*lang),x+(2*lang), y+(17*lang), fill='black', width=5)
+    l.create_line(x+(13*lang),y+(16*lang),x+(13*lang), y+(17*lang), fill='black', width=5)
+    l.create_line(x+(15*lang),y+(16*lang),x+(15*lang), y+(17*lang), fill='black', width=5)
 
+#Funkcija aprašanti žaidėjo ikonos judėjimą
 def move(event):
-    x,y=0, 0
+    x_k,y_k=0, 0
     if event.keysym=="Up":
-        y=-10
+        y_k=-10
     elif event.keysym=="Down":
-        y=10
+        y_k=10
     elif event.keysym=="Left":
-        x=-10
+        x_k=-10
     elif event.keysym=="Right":
-        x=10  
+        x_k=10  
         
     x1,y1,x2,y2 = l.bbox(player)
-    n_x1,n_y1,n_x2,n_y2=x1+x,y1+y,x2+x,y2+y
+    n_x1,n_y1,n_x2,n_y2=x1+x_k,y1+y_k,x2+x_k,y2+y_k
     
     for sien in labirintas:
-        sien_x1, sien_y1, sien_x2, sien_y2 = sien
+        (sien_x1, sien_y1, sien_x2, sien_y2)= sien
         if (
             n_x1 < sien_x2
             and n_x2 > sien_x1
@@ -284,9 +440,11 @@ def move(event):
             and n_y2 > sien_y1
         ):
             return     
-    l.move(player,x,y)
+    l.move(player,x_k,y_k)
 
 langas.bind_all("<Key>",move)
+
+#Pagrindinio lango mygtukai
 
 mygt1=customtkinter.CTkButton(langas, text='Pradėti žaidimą', command=level_1, fg_color='#1b145e')
 mygt1.place(relx=0.36, rely=0.55)
@@ -298,8 +456,6 @@ mygt3=customtkinter.CTkButton(langas, text='Nugalėtojai', fg_color='#1b145e')
 mygt3.place(relx=0.36, rely=0.85)
 
 mygt7=customtkinter.CTkButton(langas, text='Ankstesnis lygis', command=level_1)
-
-
 
 
 langas.mainloop()
